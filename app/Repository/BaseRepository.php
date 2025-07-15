@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
 abstract class BaseRepository
@@ -26,12 +27,14 @@ abstract class BaseRepository
 
     /**
      * @throws BindingResolutionException
+     * @throws Exception
      */
     public function initialize()
     {
        if (class_exists($this->getModel())) {
            return app()->make($this->getModel());
        }
+       throw new Exception($this->getModel());
     }
 
 }
