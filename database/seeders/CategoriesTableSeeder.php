@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -12,27 +13,15 @@ class CategoriesTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        Category::insert([
-            [
-                'name' => 'Drinks',
-            ],
-            [
-                'name' => 'Foods',
-            ],
-            [
-                'name' => 'Snacks',
-            ],
-            [
-                'name' => 'Desserts',
-            ],
-            [
-                'name' => 'Beverages',
-            ],
-            [
-                'name' => 'Fruits',
-            ]
+   public function run()
+{
+    $categories = ['Drinks', 'Foods', 'Snacks', 'Desserts', 'Beverages', 'Fruits'];
+
+    foreach ($categories as $name) {
+        Category::create([
+            'name' => $name,
+            'slug' => Str::slug($name),
         ]);
+    }
     }
 }

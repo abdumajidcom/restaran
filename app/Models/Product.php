@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use SoftDeletes;
+      use HasFactory; use SoftDeletes;
 
     protected $table = 'products';
 
@@ -17,11 +17,12 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'image'
+        'image',
+        'sold_out'
     ];
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class);
     }
 }

@@ -1,26 +1,52 @@
 <?php
 
-declare(strict_types=1);
-
-use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Site\CategoryViewController;
+use TCG\Voyager\Facades\Voyager;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// Foydalanuvchilar uchun
+Route::get('/', [CategoryViewController::class, 'index'])->name('home');
+Route::get('/category/{id}', [CategoryViewController::class, 'show'])->name('category.show');
 
-Route::get('/', [CategoryController::class, 'index']);
+// Admin panel
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', fn() => view('admin.index'))->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('orders', OrderController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('products', ProductController::class);
+
+    Voyager::routes(); // Voyager marshrutlari
+});
+
+// Telegram test
+Route::get('/test-telegram', function () {
+    (new \App\Service\TelegramNotificationService)->sendMessage('✅ Telegramdan salom! Order tayyor!');
+    return 'Xabar yuborildi';
+});
+
+Route::get('/drinks', [PublicController::class, 'drinks'])->name('public.drinks');
+Route::get('/foods', [PublicController::class, 'foods'])->name('public.foods');
+Route::get('/desserts', [PublicController::class, 'desserts'])->name('public.desserts');
+Route::get('/category/{slug}', [PublicProductController::class, 'categoryProducts'])->name('category.products');
 
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', function () {
-        return view('admin.index');
-    });
+use Illuminate\Support\Facades\File;
+
+Route::get('/view-files', function () {
+    $files = File::allFiles(resource_path('views'));
+    
+    $list = [];
+    foreach ($files as $file) {
+        $list[] = $file->getRelativePathname();
+    }
+
+    echo "<pre>";
+    print_r($list);
+    echo "</pre>";
 });

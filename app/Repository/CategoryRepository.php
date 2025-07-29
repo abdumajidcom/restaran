@@ -24,4 +24,21 @@ class CategoryRepository extends BaseRepository
     {
         return $this->model::create($data);
     }
+
+    public function findById(int $id): ?Category
+    {
+        return $this->model::find($id);
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        $category = $this->findById($id);
+        return $category ? $category->update($data) : false;
+    }
+
+    public function delete(int $id): bool
+    {
+        $category = $this->findById($id);
+        return $category ? $category->delete() : false;
+    }
 }

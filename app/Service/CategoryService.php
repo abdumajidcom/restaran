@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Repository\CategoryRepository;
@@ -46,5 +48,43 @@ class CategoryService
             throw new Exception('Category not created');
         }
         return $result;
+    }
+
+    public function findCategoryById(int $id): \App\Models\Category
+    {
+        $category = $this->categoryRepository->findById($id);
+        if (!$category) {
+            throw new Exception('Category not found');
+        }
+        return $category;
+    }
+
+    public function updateCategory(int $id, array $data): bool
+    {
+        $this->findCategoryById($id); // mavjudligini tekshir
+        $updated = $this->categoryRepository->update($id, $data);
+        if (!$updated) {
+            throw new Exception('Category not updated');
+        }
+        return true;
+    }
+
+    public function deleteCategory(int $id): bool
+    {
+        $this->findCategoryById($id); // mavjudligini tekshir
+        $deleted = $this->categoryRepository->delete($id);
+        if (!$deleted) {
+            throw new Exception('Category not deleted');
+        }
+        return true;
+    }
+
+    public function searchCategories(string $keyword): Collection
+   {
+        $results = $this->categoryRepository->search($keyword);
+        if ($results->isEmpty()) {
+            throw new Exception('No categories found for the given search keyword.');
+        }
+        return $results;
     }
 }

@@ -15,7 +15,7 @@ class Controller extends BaseController
     public function viewException(Throwable $exception)
     {
         /** @todo Save or notify the exception */
-        return view('admin.pages.exception.index', [
+        return view('admin.pages.categories.index', [
             'code'  => $exception->getCode(),
             'message' => $exception->getMessage(),
             'file' => $exception->getFile(),
