@@ -42,3 +42,4 @@ class DrinksTableSeeder extends Seeder
         }
     }
 }
+

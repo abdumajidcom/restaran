@@ -1,4 +1,4 @@
-@extends('layout.app') 
+@extends('layout.app')
 
 @section('title', 'Product List')
 
@@ -28,7 +28,7 @@
             <tr>
                 <td>{{ $product->id }}</td>
                 <td>{{ $product->name }}</td>
-                <td>${{ number_format($product->price, 2) }}</td>
+                <td>{{ number_format($product->price) }} so'm</td>
                 <td>
                     @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" width="60">

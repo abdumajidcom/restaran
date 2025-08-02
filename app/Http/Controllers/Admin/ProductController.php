@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    
+
     public function index()
     {
         $products = Product::with('category')->latest()->paginate(10);
         return view('admin.pages.products.index', compact('products'));
     }
 
-   
+
     public function create()
     {
         $categories = Category::all();
@@ -41,39 +41,51 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
-    
+
     public function show(Product $product)
     {
         return view('admin.pages.products.show', compact('product'));
     }
 
-    
+
     public function edit(Product $product)
     {
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        return view('admin.pages.products.edit', compact('product', 'categories'));
     }
 
-    
-    public function update(StoreProductRequest $request, Product $product)
-    {
-        $data = $request->validated();
 
-        // Yangi rasm bo‘lsa, eskisini o‘chirib, yangisini saqlash
+    public function update(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'price' => 'sometimes|numeric',
+            'category_id' => 'sometimes|exists:categories,id',
+            'sold_out' => 'nullable|boolean',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        // Обновляем только то, что пришло
+        $product->fill($validated);
+
+        // sold_out: если чекбокс не отмечен — Laravel вообще не пришлёт его
+        $product->sold_out = $request->has('sold_out');
+
+        // Обработка изображения
         if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image = $imagePath;
         }
 
-        // Ma'lumotlarni yangilash
-        $product->update($data);
+        $product->save();
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
     }
 
-    
+
+
+
+
     public function destroy(Product $product)
     {
         // Rasmni o‘chirish

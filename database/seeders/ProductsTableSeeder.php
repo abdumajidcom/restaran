@@ -14,8 +14,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'category_id' => 1,
                 'name' => 'Coca-Cola',
-        
-                'description' => 'Cold and refreshing soft drink',
+
+                'description' => 'Cold and refreshing soft drinks',
                 'price' => '5000',
                 'image' => 'products/coca_cola.jpg',
             ],
@@ -29,7 +29,7 @@ class ProductsTableSeeder extends Seeder
             [
                 'category_id' => 4,
                 'name' => 'Chocolate Cake',
-            
+
                 'description' => 'Rich chocolate dessert',
                 'price' => '15000',
                 'image' => 'products/chocolate_cake.jpg',
@@ -41,3 +41,4 @@ class ProductsTableSeeder extends Seeder
         }
     }
 }
+

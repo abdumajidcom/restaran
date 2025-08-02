@@ -2,25 +2,35 @@
 
 namespace App\Service;
 
-use App\Repository\ReservationRepository;
+use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ReservationService
 {
-    protected ReservationRepository $reservationRepository;
-
-    public function __construct()
+    /**
+     * Get all reservations with related user and time.
+     */
+    public function getAllWithRelations(): Collection
     {
-        $this->reservationRepository = new ReservationRepository();
+        return Reservation::with('user')->latest()->get();
     }
 
-    public function getUpcoming(): Collection
+    /**
+     * Find a reservation by ID with user relation.
+     */
+    public function findByIdWithRelations(int $id): Reservation
     {
-        return $this->reservationRepository->getUpcoming();
+        return Reservation::with('user')->findOrFail($id);
     }
 
-    public function create(array $data)
+    /**
+     * Update reservation status (approve, cancel).
+     */
+    public function updateStatus(int $id, string $status): void
     {
-        return $this->reservationRepository->initialize()->create($data);
+        $reservation = Reservation::findOrFail($id);
+        $reservation->status = $status;
+        $reservation->save();
     }
 }

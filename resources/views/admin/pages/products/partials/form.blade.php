@@ -1,11 +1,8 @@
 {{-- Mahsulot nomini kiritish qismi --}}
 <div class="mb-3">
     <label for="name" class="form-label">Product Name</label>
-    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-           value="{{ old('name', $product->name ?? '') }}">
-    {{-- Agar validatsiyada xatolik bo‘lsa, foydalanuvchiga ko‘rsatadi --}}
-    @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-</div>
+    <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $product->name) }}">
+
 
 {{-- Mahsulot narxini kiritish qismi --}}
 <div class="mb-3">

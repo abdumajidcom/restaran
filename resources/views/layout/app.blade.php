@@ -27,14 +27,13 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <a class="nav-link text-light" href="{{ route('admin.categories.index') }}">Menu</a>
                 <li><a href="{{ route('admin.orders.index') }}" class="nav-link text-light">Orders</a></li>
                 <li><a href="{{ route('admin.products.index') }}" class="nav-link text-light">Products</a></li>
-                <li class="nav-item"><a class="nav-link text-light" href="#">About</a></li>
-                <li class="nav-item"><a class="nav-link text-light" href="#">Contact</a></li>
+                <li><a href="{{ route('admin.reservations.index') }}" class="nav-link text-light">Reservations</a></li>
             </ul>
         </div>
     </nav>

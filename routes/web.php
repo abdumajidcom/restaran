@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -17,6 +18,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn() => view('admin.index'))->name('dashboard');
     Route::get('/dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('reservations', ReservationController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
@@ -36,11 +38,12 @@ Route::get('/desserts', [PublicController::class, 'desserts'])->name('public.des
 Route::get('/category/{slug}', [PublicProductController::class, 'categoryProducts'])->name('category.products');
 
 
+
 use Illuminate\Support\Facades\File;
 
 Route::get('/view-files', function () {
     $files = File::allFiles(resource_path('views'));
-    
+
     $list = [];
     foreach ($files as $file) {
         $list[] = $file->getRelativePathname();
