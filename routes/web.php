@@ -9,6 +9,10 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Site\CategoryViewController;
 use TCG\Voyager\Facades\Voyager;
 
+
+Route::get('/categories', [CategoryViewController::class, 'index'])->name('site.categories.index');
+
+
 // Foydalanuvchilar uchun
 Route::get('/', [CategoryViewController::class, 'index'])->name('home');
 Route::get('/category/{id}', [CategoryViewController::class, 'show'])->name('category.show');

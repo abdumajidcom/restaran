@@ -13,7 +13,6 @@ class ReservationsTableSeeder extends Seeder
         Reservation::insert([
             [
                 'name' => 'Ali Karimov',
-                'email' => 'ali@example.com',
                 'phone' => 9981234567,
                 'guest_count' => 4,
                 'reservation_time' => Carbon::now()->addDays(1)->setTime(19, 30),
@@ -21,7 +20,6 @@ class ReservationsTableSeeder extends Seeder
             ],
             [
                 'name' => 'Nodira Abdullayeva',
-                'email' => 'nodira@mail.com',
                 'phone' => 9981234567,
                 'guest_count' => 2,
                 'reservation_time' => Carbon::now()->addDays(2)->setTime(20, 0),
