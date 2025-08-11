@@ -1,0 +1,81 @@
+**PR Review Report (O'zbek tilida):**
+
+Hurmatli muallif, quyidagi pull request ("Service Repository architecture development") bo‘yicha batafsil va texnik tahlil qilindi. Quyida har bir asosiy qism va kod tuzilmasi bo‘yicha xulosalar, kamchiliklar hamda yaxshilanish takliflari berilgan.
+
+---
+
+### 1. **Arxitektura va Loyihaning Tuzilishi**
+
+- **Service va Repository Layer**: Loyihada Service va Repository qatlamlari to‘g‘ri ajratilgan. Repositorylar modelga bog‘liq bo‘lib, CRUD operatsiyalarni aniq ajratadi. Service qatlamida esa biznes logika va xatoliklarni boshqarish ko‘rsatilgan.
+- **Event & Listener**: TelegramEvent va TelegramListener orqali Telegramga xabar yuborish decoupling tamoyiliga mos keladi.
+- **SoftDeletes**: Category, Product, Reservation modellarida SoftDeletes qo‘llanilgan — bu amaliyotda foydalanuvchi uchun o‘chirilgan ma’lumotlarni qayta tiklash imkonini beradi.
+
+---
+
+### 2. **Kod Sifatini Tahlil Qilish**
+
+**Controllerlar:**
+- `Admin` va `Site` controllerlar RESTful tamoyillariga yaqin, harakatlar aniq ajratilgan.
+- Exception handling ko‘rsatmalari bor, lekin ayrim joylarda redundant bo‘lishi mumkin.
+- Kategoriya, mahsulot, buyurtma va rezervatsiya uchun CRUD operatsiyalari to‘liq.
+- `viewException(Throwable $th)` metodi faqat `categories.index` ni qaytaradi, lekin istalgan controllerda ishlatiladi. Bu universal emas, har bir controller uchun turli view bo‘lishi kerak.
+
+**Requestlar:**
+- Validation to‘liq va aniq, ayrim joylarda metodlar bir-birini takrorlaydi (masalan, status uchun bir nechta qoidalar).
+- Ba’zi requestlarda authorize() false qilib qo‘yilgan, bu test bosqichida muammo tug‘dirishi mumkin.
+
+**Modellar:**
+- MenuItem modeli o‘chirildi va Product modeliga migratsiya qilindi — bu bir xil ma’lumotlar uchun yaxlitlikni ta’minlaydi.
+- Relationlar aniq, masalan: Category -> products, Order -> items.
+
+**Service qatlamlari:**
+- Service qatlamida xatoliklar to‘g‘ri qaytariladi, lekin ba’zi joylarda Exceptionlar ko‘p ishlatilgan.
+- TelegramNotificationService va TelegramService o‘rtasida funksiya va naming bir-biriga yaqin, lekin har xil ishlatilgan — buni birlashtirish yoki namingni aniqlashtirish tavsiya etiladi.
+
+**Event va Listener:**
+- TelegramEvent va TelegramListener orqali mahsulot yaratish/yangilash/o‘chirishda xabar yuborish to‘g‘ri ishlangan.
+- Listenerda $products bir mahsulot uchun mo‘ljallangan, lekin kelajakda bir nechta mahsulot uchun extensible qilish mumkin.
+
+---
+
+### 3. **Kamchiliklar va Yaxshilash Takliflari**
+
+1. **Universal Exception Handling**: 
+   - Controllerda viewException faqat bitta view qaytaradi. Buni universal qilish yoki controller kontekstiga moslab o‘zgartirish kerak.
+   - Exception message-lar user-friendly bo‘lishi kerak.
+
+2. **Validation**:
+   - Requestlarda ba’zi joylarda bir xil validatsiya qoidasi ikki marta yozilgan (masalan, status uchun).
+   - authorize() false bo‘lsa, endpoint ishlamaydi; test paytida true bo‘lishi shart.
+
+3. **DRY** (Don't Repeat Yourself) tamoyiliga amal qilinmagan joylar bor:
+   - ProductService va CategoryService kodlari ba’zi joylarda bir xil. Buni trait yoki abstract service orqali birlashtirish mumkin.
+   - CRUD operatsiyalarni base service/repository orqali umumlashtirish mumkin.
+
+4. **Naming** va **Code Consistency**:
+   - TelegramNotificationService va TelegramService namingi bir-biriga yaqin, lekin har xil ishlatilgan. Yagona naming va funksiya ajratish tavsiya etiladi.
+   - Eventlarda action parametrini enum orqali qabul qilish xavfsizroq va kengaytiriladigan bo‘ladi.
+
+5. **Relationlar**:
+   - Reservation modelida user bilan aloqasi bor, lekin boshqa modellar uchun ham relationlar to‘liq yozilishi kerak.
+
+6. **Unit Testlar**:
+   - Kodda testlar ko‘rinmayapti. Service va repository qatlamlarini test qilish uchun unittestlar qo‘shilishi kerak.
+
+---
+
+### 4. **Umumiy Xulosa**
+
+- Arxitektura zamonaviy, Laravel tamoyillariga mos va kengaytiriladigan tarzda qurilgan.
+- Kodning o‘qilishi va kengaytirilishi oson, dependency injection to‘g‘ri ishlatilgan.
+- Xatoliklar va user experience bo‘yicha ayrim joylarda yaxshilanishlar talab etiladi.
+- Naming va DRY tamoyilariga to‘liq amal qilish, testlarni qo‘shish va exception handlingni universal qilish tavsiya etiladi.
+
+---
+
+**Yakuniy baho:**  
+Kod arxitekturasi to‘g‘ri, loyihaning kengayishiga va texnik qarorlar qabul qilishga mos. Biroq, ba’zi joylarda takomillashtirish va refaktor qilish tavsiya etiladi. Agar yuqoridagi kamchiliklar bartaraf etilsa, loyiha production uchun to‘liq tayyor bo‘ladi.
+
+---
+
+**Takliflar bo‘yicha so‘rov va feedback uchun ochiqman.
