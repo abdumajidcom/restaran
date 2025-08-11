@@ -18,8 +18,8 @@ class CreateReservationsTable extends Migration
         $table->unsignedBigInteger('user_id')->nullable();
         $table->string('name');
         $table->string('phone');
-        $table->string('email')->unique();
-        $table->enum('type', ['table', 'cabin']);
+            $table->string('email')->nullable()->change();
+            $table->enum('type', ['table', 'cabin']);
         $table->integer('guest_count');
         $table->datetime('reservation_time');
         $table->text('note')->nullable();

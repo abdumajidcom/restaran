@@ -8,18 +8,18 @@
             <h2>Reservations</h2>
             <a href="{{ route('admin.reservations.create') }}" class="btn btn-danger">+ Add Reservations</a>
         </div>
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
 
-    @if ($reservations->isEmpty())
-        <div class="alert alert-warning">No reservations found.</div>
-    @else
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if ($reservations->isEmpty())
+            <div class="alert alert-warning">No reservations found.</div>
+        @else
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
                     <tr>
                         <th>#</th>
                         <th>Customer Name</th>
@@ -32,21 +32,32 @@
                         <th>Created</th>
                         <th>Actions</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     @foreach ($reservations as $index => $reservation)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $reservation->name }}</td>
                             <td>{{ $reservation->phone }}</td>
                             <td>{{ $reservation->guest_count }}</td>
-                            <td>{{ \Carbon\Carbon::parse($reservation->date)->format('d M Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($reservation->time)->format('H:i') }}</td>
-                            <td>{{ $reservation->note ?? '-' }}</td>
+
                             <td>
-                                <span class="badge bg-{{ $reservation->status === 'confirmed' ? 'success' : ($reservation->status === 'pending' ? 'warning' : 'secondary') }}">
-                                    {{ ucfirst($reservation->status) }}
-                                </span>
+                                {{ $reservation->date ? \Carbon\Carbon::parse($reservation->date)->format('d M Y') : 'No date' }}
+                            </td>
+                            <td>
+                                {{ $reservation->time ? \Carbon\Carbon::parse($reservation->time)->format('H:i') : 'No time' }}
+                            </td>
+
+                            <td>{{ $reservation->note ?? '-' }}</td>
+
+                            <td>
+                                    <span class="badge bg-{{ $reservation->status === 'confirmed' ? 'success' : ($reservation->status === 'pending' ? 'warning' : 'secondary') }}">
+                                        {{ ucfirst($reservation->status) }}
+                                    </span>
+                            </td>
+
+                            <td>
+                                {{ $reservation->created_at ? $reservation->created_at->format('d M Y') : 'N/A' }}
                             </td>
 
                             <td>
@@ -60,8 +71,9 @@
                             </td>
                         </tr>
                     @endforeach
-                </tbody>
-            </table>
-        </div>
-    @endif
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
 @endsection

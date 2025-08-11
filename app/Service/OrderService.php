@@ -34,10 +34,9 @@ class OrderService
 
     public function createOrder(array $data): Order
     {
-        // Create the order in the database
+
         $order = $this->orderRepository->create($data);
 
-        // Build the Telegram message
         $message = "*🆕 New Order!*\n";
         $message .= "🧾 Order ID: `{$order->id}`\n";
         $message .= "📅 Time: `{$order->created_at->format('d.m.Y H:i')}`\n";

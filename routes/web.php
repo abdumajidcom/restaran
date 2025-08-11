@@ -26,6 +26,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Voyager::routes(); // Voyager marshrutlari
 });
 
+Route::get('/drinks/buy/{id}', [App\Http\Controllers\DrinkController::class, 'buy'])->name('drinks.buy');
+
+
 // Telegram test
 Route::get('/test-telegram', function () {
     (new \App\Service\TelegramNotificationService)->sendMessage('✅ Telegramdan salom! Order tayyor!');
@@ -36,7 +39,8 @@ Route::get('/drinks', [PublicController::class, 'drinks'])->name('public.drinks'
 Route::get('/foods', [PublicController::class, 'foods'])->name('public.foods');
 Route::get('/desserts', [PublicController::class, 'desserts'])->name('public.desserts');
 Route::get('/category/{slug}', [PublicProductController::class, 'categoryProducts'])->name('category.products');
-
+Route::get('/admin/reservations/create', [ReservationController::class, 'create'])->name('admin.reservations.create');
+Route::get('/admin/reservations/edit', [ReservationController::class, 'edit'])->name('admin.reservations.edit');
 
 
 use Illuminate\Support\Facades\File;
