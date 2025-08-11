@@ -11,6 +11,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Throwable;
 
+/**
+ * Category Controller
+ */
 class CategoryController extends Controller
 {
     protected CategoryService $categoryService;
