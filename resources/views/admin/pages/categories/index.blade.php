@@ -3,7 +3,34 @@
 @section('title', 'Categories')
 
 @section('content')
-    <h1 class="mb-4">Menu Categories</h1>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes upPulse {
+            0%   { transform: translateX(0); }
+            25%  { transform: translateX(55px); }
+            50%  { transform: translateX(0); }
+            75%  { transform: translateX(-100px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes rainbow-text {
+            0%   { color: red; }
+            16%  { color: orange; }
+            33%  { color: yellow; }
+            50%  { color: green; }
+            66%  { color: blue; }
+            83%  { color: violet; }
+            100% { color: red; }
+        }
+
+        .anim-rainbow-Pulse {
+            font-family: 'Curlz MT', cursive;
+            animation: rainbow-text 3s linear infinite, upPulse 4s ease-in-out infinite;
+            display: inline-block;
+        }
+    </style>
+
+    <h1 class="mb-4 anim-rainbow-Pulse">Menu Categories</h1>
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -11,7 +38,7 @@
         </div>
     @endif
 
-    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary mb-3">➕ Add New Category</a>
+    <a href="{{ route('admin.categories.create') }}" style="cursor: no-drop ; margin-left: 50px " class="btn btn-primary mb-3">➕ Add New Category</a>
 
     <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle text-center">
