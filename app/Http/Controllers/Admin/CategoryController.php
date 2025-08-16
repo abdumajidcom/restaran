@@ -22,7 +22,7 @@ class CategoryController extends Controller
     {
         $this->categoryService = $categoryService;
     }
-
+zzz
     public function index(): View|RedirectResponse
     {
         try {
