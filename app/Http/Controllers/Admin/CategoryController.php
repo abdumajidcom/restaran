@@ -107,6 +107,7 @@ class CategoryController extends Controller
     }
 
     /**
+     * bu
      * @param Category $category
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
      */
