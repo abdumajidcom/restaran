@@ -22,8 +22,11 @@ class CategoryController extends Controller
     {
         $this->categoryService = $categoryService;
     }
-zzz
-    public function index(): View|RedirectResponse
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+     */
+    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         try {
             $categories = $this->categoryService->getCategories();
@@ -33,7 +36,10 @@ zzz
         }
     }
 
-    public function create(): View|RedirectResponse
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+     */
+    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         try {
             return view('admin.pages.categories.create');
@@ -54,7 +60,12 @@ zzz
             ->withErrors(['error' => $th->getMessage()]);
         }
     }
-    public function edit(int $id): View|RedirectResponse
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+     */
+    public function edit(int $id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         try {
             $category = $this->categoryService->findCategoryById($id);
@@ -84,14 +95,22 @@ zzz
         }
     }
 
-    public function products($id)
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+     */
+    public function products($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $category = Category::with('products')->findOrFail($id);
 
         return view('admin.pages.categories.products', compact('category'));
     }
 
-    public function show(Category $category): View
+    /**
+     * @param Category $category
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+     */
+    public function show(Category $category): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $products = $category->products()->latest()->get();
 
