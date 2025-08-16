@@ -14,9 +14,19 @@ class CreateReservationsTable extends Migration
     public function up()
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        $table->id();
+        $table->unsignedBigInteger('user_id')->nullable();
+        $table->string('name');
+        $table->string('phone');
+        $table->enum('type', ['table', 'cabin']);
+        $table->integer('guest_count');
+        $table->datetime('reservation_time');
+        $table->text('note')->nullable();
+        $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
+        $table->softDeletes();
+        $table->timestamps();
         });
+
     }
 
     /**
