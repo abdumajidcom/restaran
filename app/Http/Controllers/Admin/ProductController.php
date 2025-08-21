@@ -19,11 +19,15 @@ class ProductController extends Controller
     }
 
 
+    // App\Http\Controllers\Admin\ProductController.php
+
     public function create()
     {
         $categories = Category::all();
-        return view('admin.pages.products.create', compact('categories'));
+        $product = new Product(); // <-- bo‘sh instansiya
+        return view('admin.pages.products.create', compact('categories', 'product'));
     }
+
 
     // (formadan yuborilgan ma’lumot asosida)
     public function store(StoreProductRequest $request)
