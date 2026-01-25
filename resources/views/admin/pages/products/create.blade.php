@@ -10,7 +10,12 @@
 
         @csrf
 
-        @include('admin.pages.products.partials.form', ['buttonText' => 'Create Product'])
+        @include('admin.pages.products.partials.form', [
+                 'buttonText' => 'Create Product',
+                 'product' => $product,           // <-- muhim
+                 'categories' => $categories      // (shunchaki aniq uzatib qo‘yish – ishonchliroq)
+              ])
+
 
 
     </form>

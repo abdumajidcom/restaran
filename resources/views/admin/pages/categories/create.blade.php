@@ -1,5 +1,5 @@
 {{-- resources/views/admin/pages/categories/create.blade.php --}}
-@extends('layout.index')
+@extends('layout.app')
 
 
 @section('content')
